@@ -14,7 +14,7 @@ class Connection extends PacketRegistry {
             console.error("WebSocket error: " + JSON.stringify(event, ["message", "arguments", "type", "name"]));
         });
         socket.addEventListener("message", event => {
-            var buf = new DataInputStream(Array.from(event.data));
+            var buf = new DataInputStream(Array.from(new Uint8Array(event.data)));
             
             // Read metadata
             var id = buf.readInt();
@@ -22,7 +22,7 @@ class Connection extends PacketRegistry {
             var PacketType = this.getPacketType(buf.readInt());
             if (buf.readInt() != buf.remaining())
                 throw new Error("Incoming packet is corrupted!");
-            if (packetType === null)
+            if (PacketType === null)
                 throw new Error("Unregistered packet type received!");
             
             // Read and handle packet

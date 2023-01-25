@@ -24,12 +24,7 @@ class PrimitivePacket {
                     case 6: return value.readLong();
                     case 7: return value.readFloat();
                     case 8: return value.readDouble();
-                    case 9:
-                        var out = "";
-                        var numChars = value.readInt();
-                        for (var i = 0; i < numChars; i++)
-                            out += value.readChar();
-                        return out;
+                    case 9: return value.readUTF();
                 }
             })();
         } else
@@ -74,8 +69,7 @@ class PrimitivePacket {
                 out.writeDouble(value);
                 break;
             case 9:
-                out.writeInt(value.length);
-                out.writeChars(value);
+                out.writeUTF(value);
                 break;
             default:
                 throw new Error("Only primitive data types and Strings are supported!");
